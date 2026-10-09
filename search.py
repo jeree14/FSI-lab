@@ -126,8 +126,8 @@ def b_b_graph_search(problem):
     return graph_search(problem, B_B())
 
 def b_b_subestimacion_graph_search(problem):
-        """Ramificación y acotación con subestimación: f(n) = g(n) + h(n)."""
-        return graph_search(problem, B_B_Subestimacion(lambda node: node.path_cost + problem.h(node)))
+    """Ramificación y acotación con subestimación: f(n) = g(n) + h(n)."""
+    return graph_search(problem, B_B_Subestimacion(lambda node: node.path_cost + problem.h(node)))
 
 # _____________________________________________________________________________
 # The remainder of this file implements examples for the search algorithms.
