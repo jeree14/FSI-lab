@@ -544,17 +544,21 @@ class FIFOQueue(Queue):
         return e
     
 class B_B(Queue):
+    """Cola priorizada por coste acumulado para Ramificación y Acotación."""
+    def __init__(self):
         self.A = []
 
     def append(self, item):
         self.A.append(item)
+        # Ordenamos de mayor a menor para que pop() saque el de menor coste en tiempo O(1)
         self.A.sort(key=lambda node: node.path_cost, reverse=True)
-    
+
     def __len__(self):
         return len(self.A)
-    
+
     def extend(self, items):
-        self.A.extend(items)
+        for item in items:
+            self.append(item)
 
     def pop(self):
         return self.A.pop()
@@ -564,6 +568,4 @@ class B_B(Queue):
 ## Fig: The idea is we can define things like Fig[3,10] later.
 ## Alas, it is Fig[3,10] not Fig[3.10], because that would be the same as Fig[3.1]
 Fig = {}
-
-
 
