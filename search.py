@@ -93,41 +93,44 @@ class Node:
 # ______________________________________________________________________________
 ## Uninformed Search algorithms
 
-## Uninformed Search algorithms
-
 def graph_search(problem, fringe):
-    """Búsqueda en grafo que devuelve una tupla: (nodo_solución, nodos_expandidos)."""
+    """Search through the successors of a problem to find a goal.
+    The argument fringe should be an empty queue.
+    If two paths reach a state, only use the best one. [Fig. 3.18]"""
     closed = {}
-    expanded_nodes = 0
+    expandidos = 0                                          # NUEVO
     fringe.append(Node(problem.initial))
     while fringe:
         node = fringe.pop()
         if problem.goal_test(node.state):
-            return node, expanded_nodes
+            print("Nodos expandidos:", expandidos)          # NUEVO
+            return node
         if node.state not in closed:
             closed[node.state] = True
-            expanded_nodes += 1
+            expandidos += 1                                 # NUEVO
             fringe.extend(node.expand(problem))
-    return None, expanded_nodes
+    return None
 
 
 def breadth_first_graph_search(problem):
-    """Búsqueda primero en anchura (BFS)."""
+    """Search the shallowest nodes in the search tree first. [p 74]"""
     return graph_search(problem, FIFOQueue())
 
 
 def depth_first_graph_search(problem):
-    """Búsqueda primero en profundidad (DFS)."""
+    """Search the deepest nodes in the search tree first. [p 74]"""
     return graph_search(problem, Stack())
 
 
 def b_b_graph_search(problem):
-    """Búsqueda por Ramificación y Acotación (Coste Uniforme)."""
+    """Ramificación y Acotación (Coste menor)."""
     return graph_search(problem, B_B())
 
 def b_b_subestimacion_graph_search(problem):
     """Ramificación y acotación con subestimación: f(n) = g(n) + h(n)."""
     return graph_search(problem, B_B_Subestimacion(lambda node: node.path_cost + problem.h(node)))
+
+
 
 # _____________________________________________________________________________
 # The remainder of this file implements examples for the search algorithms.
@@ -267,6 +270,11 @@ class GPSProblem(Problem):
     def h(self, node):
         """h function is straight-line distance from a node's state to goal."""
         locs = getattr(self.graph, 'locations', None)
+        if locs:
+            return int(distance(locs[node.state], locs[self.goal]))
+        else:
+            return infinity
+
         if locs:
             return int(distance(locs[node.state], locs[self.goal]))
         else:
