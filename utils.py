@@ -1,4 +1,4 @@
-
+import math
 #______________________________________________________________________________
 # Simple Data Structures: infinity, Dict, Struct
 
@@ -544,7 +544,7 @@ class FIFOQueue(Queue):
         return e
     
 class B_B(Queue):
-    """Cola priorizada por coste acumulado para Ramificación y Acotación."""
+    """Menor coste - Ramificación y Acotación."""
     def __init__(self):
         self.A = []
 
@@ -557,18 +557,18 @@ class B_B(Queue):
         return len(self.A)
 
     def extend(self, items):
-        for item in items:
-            self.append(item)
+        self.A.extend(items)
+        self.A.sort(key=lambda node: node.path_cost, reverse=True)
 
     def pop(self):
         return self.A.pop()
 
 
 class B_B_Subestimacion(Queue):
-    """Cola para Ramificación y Acotación con Subestimación f(n) = g(n) + h(n)."""
+    """Menor coste sumando final - Ramificación y Acotación -> f(n) = g(n) + h(n)."""
     def __init__(self, f):
         self.A = []
-        self.f = f  # Función de evaluación f(n)
+        self.f = f
 
     def append(self, item):
         self.A.append(item)
@@ -579,8 +579,8 @@ class B_B_Subestimacion(Queue):
         return len(self.A)
 
     def extend(self, items):
-        for item in items:
-            self.append(item)
+        self.A.extend(items)
+        self.A.sort(key=self.f, reverse=True)
 
     def pop(self):
         return self.A.pop()
