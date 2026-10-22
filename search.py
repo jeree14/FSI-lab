@@ -274,8 +274,3 @@ class GPSProblem(Problem):
             return int(distance(locs[node.state], locs[self.goal]))
         else:
             return infinity
-
-        if locs:
-            return int(distance(locs[node.state], locs[self.goal]))
-        else:
-            return infinity
