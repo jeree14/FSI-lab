@@ -98,17 +98,19 @@ def graph_search(problem, fringe):
     The argument fringe should be an empty queue.
     If two paths reach a state, only use the best one. [Fig. 3.18]"""
     closed = {}
-    expandidos = 0                                          # NUEVO
+    expandidos = 0                                          
+    visitados = 0                                                             #iniciamos ambos contadores a 0
     fringe.append(Node(problem.initial))
     while fringe:
         node = fringe.pop()
+        visitados += 1                                                        #sumar 1 cuando sale un nodo de la lista abierta
         if problem.goal_test(node.state):
-            print("Nodos expandidos:", expandidos)          # NUEVO
+            print(f"Visitados: {visitados} | Expandidos: {expandidos}")       #se muestra resultados
             return node
         if node.state not in closed:
-            closed[node.state] = True
-            expandidos += 1                                 # NUEVO
-            fringe.extend(node.expand(problem))
+            closed[node.state] = True                                         #si el nodo no esta en lista cerrada, mete su estado (nombre)
+            expandidos += 1                                                   #sumar 1 cuando el nodo se expande y genera los hijos
+            fringe.extend(node.expand(problem))                               #aqui ya añade los nodos hijos a la lista abierta
     return None
 
 
